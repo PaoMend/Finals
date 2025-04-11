@@ -1,0 +1,73 @@
+class School:
+    """Base class for schools with common functionality"""
+    
+    def __init__(self, name):
+        self.name = name
+        self.students = {} 
+    
+    def add_student(self, name, grades):
+        """Add a student with their grades"""
+        self.students[name] = grades
+    
+    def calculate_average(self, grades):
+        """Helper method to calculate average of grades"""
+        return sum(grades) / len(grades) if grades else 0
+    
+    def calculate_gpa(self, average):
+        """Convert average grade to 4.0 scale GPA"""
+        if average >= 90: return 4.0
+        elif average >= 80: return 3.0
+        elif average >= 70: return 2.0
+        elif average >= 60: return 1.0
+        else: return 0.0
+    
+    def display_performance(self):
+        """Display student performance (to be overridden by subclasses)"""
+        raise NotImplementedError
+
+
+class SchoolOne(School):
+    """First school with standard performance display"""
+    
+    def display_performance(self):
+        print(f"\n{self.name} - Student Performance")
+        print("=" * 30)
+        for student, grades in self.students.items():
+            avg = self.calculate_average(grades)
+            gpa = self.calculate_gpa(avg)
+            print(f"{student}: Average Grade = {avg:.1f}, GPA = {gpa:.1f}")
+        print("=" * 30)
+
+class SchoolTwo(School):
+    """Second school with enhanced performance display"""
+    
+    def display_performance(self):
+        print(f"\n{self.name} - Academic Report")
+        print("=" * 40)
+        total_avg = 0
+        for student, grades in self.students.items():
+            avg = self.calculate_average(grades)
+            gpa = self.calculate_gpa(avg)
+            total_avg += avg
+            print(f"{student:<15} | Grade Avg: {avg:5.1f} | GPA: {gpa:3.1f}")
+        
+        school_avg = total_avg / len(self.students) if self.students else 0
+        print("=" * 40)
+        print(f"School Average: {school_avg:.1f}")
+        print("=" * 40)
+
+
+
+if __name__ == "__main__":
+    school1 = SchoolOne("Holy Spirit School")
+    school1.add_student("Paola Mendoza", [75, 80, 78, 82])
+    school1.add_student("Zyneth Rejuso", [88, 92, 85, 90])
+    school1.add_student("Bettina Orallo", [92, 95, 98, 90])
+    
+    school2 = SchoolTwo("School of the Holy Spirit")
+    school2.add_student("Christina Salvador", [80, 85, 88, 82])
+    school2.add_student("Maple Goco", [95, 97, 93, 96])
+    school2.add_student("Mia Bautista", [65, 70, 68, 72])
+    
+    school1.display_performance()
+    school2.display_performance()
