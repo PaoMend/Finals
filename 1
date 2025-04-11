@@ -1,0 +1,83 @@
+class Vehicle:
+    """Base class representing a vehicle."""
+    
+    def __init__(self, name, max_speed):
+        self._name = name  # Encapsulation: protected attribute
+        self._max_speed = max_speed
+        
+    def get_info(self):
+        """Abstract method to be implemented by subclasses"""
+        raise NotImplementedError("Subclasses should implement this!")
+        
+    @classmethod
+    def vehicle_class(cls):
+        """Class method to get vehicle type"""
+        return cls.__name__
+        
+    @staticmethod
+    def is_vehicle(obj):
+        """Static method to check if object is a vehicle"""
+        return isinstance(obj, Vehicle)
+
+
+class Bus(Vehicle):
+    """Bus class inheriting from Vehicle"""
+    
+    def __init__(self, name, max_speed, capacity):
+        super().__init__(name, max_speed)
+        self.__capacity = capacity  # Encapsulation: private attribute
+        
+    def get_info(self):  # Polymorphism through method overriding
+        return f"{self._name} with max speed {self._max_speed} km/h, capacity {self.__capacity}"
+        
+    def honk(self):  # Specific method for buses
+        return "Honk honk!"
+        
+
+class SchoolBus(Bus):
+    """SchoolBus class inheriting from Bus"""
+    
+    def __init__(self, name, max_speed, capacity, school_name):
+        super().__init__(name, max_speed, capacity)
+        self.school_name = school_name
+        
+    def get_info(self):  # Polymorphism through method overriding
+        base_info = super().get_info()
+        return f"{base_info}, school: {self.school_name}"
+        
+    def honk(self):  # Polymorphism through method overriding
+        return "Gentle school bus honk"
+
+
+# Demonstration
+if __name__ == "__main__":
+    # Create instances
+    vehicle = Vehicle("Generic", 100)
+    bus = Bus("City Bus", 80, 50)
+    school_bus = SchoolBus("Yellow Bus", 60, 30, "Sunshine Elementary")
+    
+    # Check instance relationships
+    print(f"Is SchoolBus an instance of Vehicle? {isinstance(school_bus, Vehicle)}")  # True
+    print(f"Is Bus an instance of Vehicle? {isinstance(bus, Vehicle)}")  # True
+    print(f"Is Vehicle an instance of Bus? {isinstance(vehicle, Bus)}")  # False
+    
+    # Demonstrate polymorphism
+    vehicles = [vehicle, bus, school_bus]
+    for v in vehicles:
+        try:
+            print(v.get_info())
+        except NotImplementedError:
+            print("Vehicle info not implemented")
+    
+    # Demonstrate encapsulation
+    try:
+        print(school_bus.__capacity)  # Will raise AttributeError
+    except AttributeError as e:
+        print(f"Encapsulation working: {e}")
+    
+    # Demonstrate class method
+    print(f"Vehicle class: {Vehicle.vehicle_class()}")
+    print(f"Bus class: {Bus.vehicle_class()}")
+    
+    # Demonstrate static method
+    print(f"Is bus a vehicle? {Vehicle.is_vehicle(bus)}")
