@@ -1,0 +1,56 @@
+class Vector:
+    """A class representing a mathematical vector with operator overloading and user input"""
+    
+    def __init__(self, *components):
+        """Initialize a vector with components"""
+        self.components = components
+    
+    @classmethod
+    def from_input(cls):
+        """Create a vector from user input"""
+        while True:
+            try:
+                input_str = input("Enter vector components separated by spaces (e.g., '1 2 3'): ")
+                components = [float(x) for x in input_str.split()]
+                if not components:
+                    raise ValueError("At least one component required")
+                return cls(*components)
+            except ValueError as e:
+                print(f"Invalid input: {e}. Please try again.")
+    
+    def __add__(self, other):
+        """Overload the + operator to add two vectors"""
+        if len(self.components) != len(other.components):
+            raise ValueError(f"Cannot add vectors of different dimensions ({len(self.components)}D and {len(other.components)}D)")
+        
+        new_components = [a + b for a, b in zip(self.components, other.components)]
+        return Vector(*new_components)
+    
+    def __repr__(self):
+        """String representation of the vector"""
+        return f"Vector{self.components}"
+    
+    def __str__(self):
+        """User-friendly string representation"""
+        return f"Vector{self.components}"
+
+
+def main():
+    print("Vector Addition Program")
+    print("-----------------------")
+    
+    print("\nEnter first vector:")
+    v1 = Vector.from_input()
+    
+    print("\nEnter second vector:")
+    v2 = Vector.from_input()
+    
+    try:
+        result = v1 + v2
+        print(f"\n{v1} + {v2} = {result}")
+    except ValueError as e:
+        print(f"\nError: {e}")
+
+
+if __name__ == "__main__":
+    main()
