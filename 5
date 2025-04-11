@@ -1,0 +1,58 @@
+class Author:
+    """Represents an author of books"""
+    
+    def __init__(self, name: str, birth_year: int, nationality: str):
+        self.name = name
+        self.birth_year = birth_year
+        self.nationality = nationality
+    
+    def __str__(self):
+        return f"{self.name} ({self.nationality}, b. {self.birth_year})"
+
+
+class Book:
+    """Represents a book that has an author (using composition)"""
+    
+    def __init__(self, title: str, publication_year: int, genre: str, author: Author):
+        self.title = title
+        self.publication_year = publication_year
+        self.genre = genre
+        self.author = author 
+    
+    def get_author_info(self) -> str:
+        """Returns formatted author information"""
+        return str(self.author)
+    
+    def get_book_age(self, current_year: int) -> int:
+        """Calculates how old the book is"""
+        return current_year - self.publication_year
+    
+    def __str__(self):
+        return (f"'{self.title}' ({self.publication_year}) - {self.genre}\n"
+                f"Author: {self.get_author_info()}")
+
+
+if __name__ == "__main__":
+    Lauren = Author("Lauren Weisberger", 1977, "American")
+    Taylor = Author("Taylor Jenkins Reid", 1983, "American")
+
+    dwp = Book(
+        "The Devil Wears Prada", 
+        2003, 
+        "Novel Ficiton", 
+        Lauren
+    )
+    
+    shoeh = Book(
+        "The Seven Husbands of Evelyn Hugo", 
+        2017, 
+        "Romance Novel", 
+        Taylor
+    )
+    
+    print(dwp)
+    print("\n" + "=" * 50 + "\n")
+    print(shoeh)
+    
+    print(f"\nAge of DWP in 2025: {dwp.get_book_age(2025)} years")
+    print(f"Age of SHOEH in 2025: {shoeh.get_book_age(2025)} years")
